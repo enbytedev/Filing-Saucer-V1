@@ -1,11 +1,11 @@
 global.__basedir = __dirname;
 
 require('dotenv').config({path:"./.env"})
-require("./scripts/aeriallaptop/aerialhelper");  
-const cors = require("cors");
+require("./scripts/aeriallaptop/aerialhelper");
 const express = require("express");
 var colors = require('colors');
 const app = express();
+
 // CLI constants
 const optionDefinitions = [
   { name: 'configure', alias: 'c', type: Boolean },
@@ -30,14 +30,10 @@ if (process.env.port == undefined) {
   process.exit()
 }
 
-// Require controller
+// Require controller and routing
 const controller = require("./scripts/control");
-
-var corsOptions = {
-  origin: `http://localhost:8081`
-};
-app.use(cors(corsOptions));
 const initRoutes = require("./scripts/routing");
+
 app.use(express.urlencoded({ extended: true }));
 // Create static route for home page, assets, etc.
 app.use(express.static('static'));
