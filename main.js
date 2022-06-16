@@ -6,8 +6,7 @@ const cors = require("cors");
 const express = require("express");
 var colors = require('colors');
 const app = express();
-
-// CLI Arguments
+// CLI constants
 const optionDefinitions = [
   { name: 'configure', alias: 'c', type: Boolean },
   { name: 'regen', alias: 'r', type: Boolean }
@@ -16,18 +15,22 @@ const commandLineArgs = require('command-line-args')
 const options = commandLineArgs(optionDefinitions)
 const cliArgs = JSON.stringify(options);
 const cliArgsParsed = JSON.parse(cliArgs);
+
+// CLI arg handling
 if (cliArgsParsed.configure) {
 require("./scripts/configure");
 }
 if (cliArgsParsed.regen) {
 require('./scripts/appUtil/regenFiles');
 }
+
+// Exit if there is no configuration
 if (process.env.port == undefined) {
   console.log("X ".brightRed.bold+".env does not exist! Please run with the ".red+"--configure".brightRed.bgGray+" flag to generate it!".red);
   process.exit()
 }
 
-// Require controller.
+// Require controller
 const controller = require("./scripts/control");
 
 var corsOptions = {
@@ -36,7 +39,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 const initRoutes = require("./scripts/routing");
 app.use(express.urlencoded({ extended: true }));
-// Create static route for home page, assets and custom client distribution.
+// Create static route for home page, assets, etc.
 app.use(express.static('static'));
 initRoutes(app);
 app.set('view engine', 'ejs');

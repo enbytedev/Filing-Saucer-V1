@@ -104,14 +104,14 @@ const upload = async (req, res) => {
     return
   }
 
-  var finalFile = `./Filing-Saucer/uploads/${disc}-${safeName}`
+  var finalFile = `./content/uploads/${disc}-${safeName}`
   // Move file out of temp
-  fs.rename(`./Filing-Saucer/uploads/temp/${req.file.originalname}`, finalFile, function (err) {
+  fs.rename(`./content/uploads/temp/${req.file.originalname}`, finalFile, function (err) {
     if (err) throw err
     console.log(`--\nUpload complete!\nUploaded to: ${finalFile}\n${req.file.originalname} --> ${disc}-${safeName}\n--`)
   })
   // Write registry entry
-  fs.writeFile(`./Filing-Saucer/registry/`+deletion, `${disc}-${safeName}`, (err) => {
+  fs.writeFile(`./content/registry/`+deletion, `${disc}-${safeName}`, (err) => {
     if (err) {
       throw err;
     }
@@ -134,7 +134,7 @@ Share route
 
 */
 const share = async (req, res) => {
-  var path = './Filing-Saucer/uploads/'+req.params.name;
+  var path = './content/uploads/'+req.params.name;
 try {
   stats = fs.statSync(path);
   res.render('share.ejs', {file: `${req.params.name}`, viewLink: `${urlFull}view/${req.params.name}`, downloadLink: `${urlFull}download/${req.params.name}`});
@@ -152,7 +152,7 @@ Views the requested file!
 */
 const view = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = "./Filing-Saucer/uploads/";
+  const directoryPath = "./content/uploads/";
   res.sendFile(fileName, { root: directoryPath }, (err) => {
     if (err) {
         res.render('info.ejs', {title: `Failure!`, desc: `File ${fileName} does not exist in this server's content datastore!`});
@@ -169,7 +169,7 @@ Downloads the requested file!
 */
 const download = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = "./Filing-Saucer/uploads/";
+  const directoryPath = "./content/uploads/";
   res.download(directoryPath + fileName, fileName, (err) => {
     if (err) {
         res.render('info.ejs', {title: `Failure!`, desc: `File ${fileName} does not exist in this server's content datastore!`});
@@ -186,17 +186,17 @@ Delete the specified file!
 */
 const deletion = (req, res) => {
   const regId = req.params.name;
-  var path = './Filing-Saucer/registry/'+regId;
+  var path = './content/registry/'+regId;
 try {
   stats = fs.statSync(path);
-  var output = read('./Filing-Saucer/registry/'+regId, function(data) {
-      fs.unlink('./Filing-Saucer/uploads/'+data, (err) => {
+  var output = read('./content/registry/'+regId, function(data) {
+      fs.unlink('./content/uploads/'+data, (err) => {
         if (err) {
           console.error(err)
           return
         }
       })
-      fs.unlink('./Filing-Saucer/registry/'+regId, (err) => {
+      fs.unlink('./content/registry/'+regId, (err) => {
         if (err) {
           console.error(err)
           return
