@@ -1,3 +1,4 @@
+require('dotenv').config({path:"./.env"})
 const fs = require('fs');
 var colors = require('colors');
 var colors = require('colors/safe');
