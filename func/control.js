@@ -11,16 +11,14 @@ var colors = require('colors');
 var urlFull = url
 if (forcePortRm == "true") {
     urlFull = `${url}/`
-    console.log("URL is set to ".blue + urlFull + "\nPort removal is FORCED per your dotenv.".yellow)
-} else if (port != "80" && port != "443") {
+    console.log("URL is set to ".blue + urlFull + "\nPort removal is FORCED per your configuration.".yellow)
+} else {
     urlFull = `${url}:${port}/`
-    console.log("URL is set to ".blue + urlFull + "\nThe port is EXCLUDED for ports 80 & 443.".blue)
+    console.log("URL is set to ".blue + urlFull + "\nTo force port removal, please edit your configuration.".blue)
 }
 
 /*
-
 Number generator
-
 */
 function generate(n) {
   var add = 1,
@@ -38,7 +36,6 @@ function generate(n) {
 }
 
 /*
-
 Regex loop
 
 a, String to operate on
@@ -64,9 +61,7 @@ function regexSafety(a, b, c, d) {
 }
 
 /*
-
 Read file
-
 */
 function read(file, callback) {
   fs.readFile(file, 'utf8', function(err, data) {
@@ -76,7 +71,6 @@ function read(file, callback) {
     callback(data);
   });
 }
-
 
 /*
 
