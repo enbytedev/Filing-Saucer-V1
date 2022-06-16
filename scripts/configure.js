@@ -3,18 +3,30 @@ const prompt = require("prompt-sync")({ sigint: true });
 var colors = require('colors');
 var colors = require('colors/safe');
 
-var port = prompt("==> (8080) Port: ");
-var url = prompt("==> (http://localhost) URL: ");
-var forcePortRemovalInApp = prompt("==> (false) Force Port Removal: ");
-var accessLimit = prompt("==> (40) How many times can /share, /view and /download be used per five minutes: ");
-var apiLimit = prompt("==> (10) How many times can upload and /delete be used per fifteen minutes: ");
+
+console.log("Entered Setup".cyan.bold);
+var port = prompt("==> (8080)".gray.bold+" Port: ".blue);
+var url = prompt("==> (http://localhost)".gray.bold+" URL: ".blue);
+var forcePortRemovalInApp = prompt("==> (false)".gray.bold+" Force Port Removal: ".blue);
+var accessLimit = prompt("==> (40)".gray.bold+" Access Limit (/share, /view, /download PER 5 MINUTES): ".blue);
+var apiLimit = prompt("==> (10)".gray.bold+" API Limit (/delete, /upload PER 15 MINUTES): ".blue);
+var applicationName = prompt("==> (FilingSaucer)".gray.bold+" Application Name: ".blue);
+var organizationName = prompt("==> (Aerial Laptop)".gray.bold+" Organization Name: ".blue);
 if (port == "") {port = 8080;}
 if (url == "") {url = `http://localhost`;}
 if (forcePortRemovalInApp == "") {forcePortRemovalInApp = false;}
 if (accessLimit == "") {accessLimit = 40;}
 if (apiLimit == "") {apiLimit = 10;}
+if (applicationName == "") {applicationName = "FilingSaucer";}
+if (organizationName == "") {organizationName = "Aerial Laptop";}
 
-var formatted = `port=${port}\nurl=${url}\nforcePortRemovalInApp=${forcePortRemovalInApp}\naccessLimit=${accessLimit}\napiLimit=${apiLimit}`
+var formatted = `port=${port}
+url=${url}
+forcePortRemovalInApp=${forcePortRemovalInApp}
+accessLimit=${accessLimit}
+apiLimit=${apiLimit}
+applicationName=${applicationName}
+organizationName=${organizationName}`
 var createStream = fs.createWriteStream(`./.env`);
 createStream.end();
 fs.writeFileSync(`./.env`, formatted);

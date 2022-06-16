@@ -1,6 +1,6 @@
 const fs = require('fs');
 const https = require('https');
-const {url, majVersion, minVersion} = require(`${__basedir}/scripts/aeriallaptop/.dist.json`);
+const {url, majVersion, minVersion, codebase} = require(`${__basedir}/scripts/aeriallaptop/.dist.json`);
 const fileName = `${__basedir}/scripts/aeriallaptop/.dist.json`;
 const file = require(fileName);
 
@@ -15,7 +15,6 @@ versionCheck();
 // File setup.
 function fileSetup() {
     // Filing Saucer Setup
-    var fs = require('fs');
     var dirUploads = `./content/uploads/temp/`;
     var dirRegistry = `./content/registry/`;
     var dirViews = `./views/`;
@@ -32,7 +31,7 @@ function fileSetup() {
         if (!fs.existsSync(dirViews)) {
             fs.mkdirSync(dirViews, { recursive: true });
             console.log("> ".green.bold+"Successfully created the VIEWS directory: ".cyan+"./views/".blue);
-            require("./pageSetup");
+            require("../appUtil/regenFiles");
         }
         if (!fs.existsSync(dirStatic)) {
             console.log("/!\\ ".yellow.bold+"The static/ directory does not exist! Please populate it with your static/icon.png and static/btmright.png for a complete instance.".yellow.italic);
@@ -98,8 +97,7 @@ function useFallback() {
         });
         res.on("end", () => {
             let json = JSON.parse(body);
-            file.url = json.FilingSaucer;
-            console.log(file.url)
+            file.url = json[codebase];
             fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
                 if (err) return console.log(err);
                 console.log('Corrected URL'.cyan);

@@ -6,8 +6,11 @@ const cors = require("cors");
 const express = require("express");
 var colors = require('colors');
 const app = express();
+
+// CLI Arguments
 const optionDefinitions = [
-  { name: 'configure', alias: 'c', type: Boolean }
+  { name: 'configure', alias: 'c', type: Boolean },
+  { name: 'regen', alias: 'r', type: Boolean }
 ]
 const commandLineArgs = require('command-line-args')
 const options = commandLineArgs(optionDefinitions)
@@ -16,11 +19,15 @@ const cliArgsParsed = JSON.parse(cliArgs);
 if (cliArgsParsed.configure) {
 require("./scripts/configure");
 }
+if (cliArgsParsed.regen) {
+require('./scripts/appUtil/regenFiles');
+}
 if (process.env.port == undefined) {
   console.log("X ".brightRed.bold+".env does not exist! Please run with the ".red+"--configure".brightRed.bgGray+" flag to generate it!".red);
   process.exit()
 }
 
+// Require controller.
 const controller = require("./scripts/control");
 
 var corsOptions = {
